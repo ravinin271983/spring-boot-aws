@@ -9,4 +9,5 @@ import com.springboot.aws.entity.User;
 public interface UserRepo extends JpaRepository<User, Long>{
 	public Optional<User> findByEmail(String email);
 	public Optional<User> findByMobile(String mobile);
+	public Optional<User> findByUserName(String userName);
 }

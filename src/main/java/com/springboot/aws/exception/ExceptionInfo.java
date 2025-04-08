@@ -8,5 +8,6 @@ import lombok.Data;
 public class ExceptionInfo {
 	private String errorMessage;
 	private String status;
+	private String url;
 	private Timestamp timestamp;
 }

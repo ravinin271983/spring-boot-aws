@@ -1,5 +1,6 @@
 package com.springboot.aws.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +21,30 @@ public class UserService {
 		Optional<User> userByEmail = findUserByEmail(user.getEmail());
 
 		if (userByEmail.isPresent()) {
-			throw new NotAvailableException("Email id already registered.");
+			throw new NotAvailableException("Email id already registered.", "/register");
 		}
 
 		Optional<User> userByMobile = findUserByMobile(user.getMobile());
 
 		if (userByMobile.isPresent()) {
-			throw new NotAvailableException("Mobile already registered.");
+			throw new NotAvailableException("Mobile already registered.", "/register");
+		}
+
+		Optional<User> userByUserName = findUserByUserName(user.getUserName());
+
+		if (userByUserName.isPresent()) {
+			throw new NotAvailableException("User name already registered.", "/register");
 		}
 
 		return saveUser(user);
+	}
+
+	public List<User> findAllUser() {
+		return userRepo.findAll();
+	}
+
+	public void deleteUser(User user) {
+		userRepo.delete(user);
 	}
 
 	@CacheEvict(key = "user")
@@ -37,14 +52,18 @@ public class UserService {
 		return userRepo.save(user);
 	}
 
-	@Cacheable(key = "user")
+	@Cacheable(value="user", key = "#user.email")
 	public Optional<User> findUserByEmail (String email) {
 		return userRepo.findByEmail(email);
 	}
 
-	@Cacheable(key = "user")
+	@Cacheable(value = "user", key = "#user.mobile")
 	public Optional<User> findUserByMobile (String mobile) {
 		return userRepo.findByMobile(mobile);
 	}
 
+	@Cacheable(value = "user", key = "#user.userName")
+	public Optional<User> findUserByUserName (String userName) {
+		return userRepo.findByUserName(userName);
+	}
 }
