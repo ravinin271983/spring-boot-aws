@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -59,6 +61,24 @@ public class UserServiceTest {
 			userService.registerUser(user);
 	    });
 		assertEquals(exception.getMessage(), "Mobile already registered.");
+	}
+
+	@Test
+	void registerUserTest_UserNameExists() {
+		User user = mockUser();
+		when(userRepo.findByUserName(Mockito.anyString())).thenReturn(Optional.of(user));
+		Exception exception = assertThrows(NotAvailableException.class, () -> {
+			userService.registerUser(user);
+	    });
+		assertEquals(exception.getMessage(), "User name already registered.");
+	}
+
+	@Test
+	void findAllTest() {
+		User user = mockUser();
+		when(userRepo.findAll()).thenReturn(Arrays.asList(user));
+		List<User> allUsers = userService.findAllUser();
+		assertEquals(1, allUsers.size());
 	}
 
 	private User mockUser() {

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.springboot.aws.exception.ExceptionInfo;
+import com.springboot.aws.exception.InvalidRequestException;
 import com.springboot.aws.exception.NotAvailableException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +24,20 @@ public class ApplicationExceptionHandler {
 		ExceptionInfo info = new ExceptionInfo();
 		info.setErrorMessage(exception.getMessage());
 		info.setStatus(Integer.toString(HttpStatus.BAD_REQUEST.value()));
+		info.setUrl(exception.getUrl());
+		Instant now = Instant.now();
+		info.setTimestamp(Timestamp.from(now));
+		return info;
+	}
+	
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(InvalidRequestException.class)
+	@ResponseBody
+	public ExceptionInfo invalidRequest(HttpServletRequest req, InvalidRequestException exception) {
+		ExceptionInfo info = new ExceptionInfo();
+		info.setErrorMessage(exception.getMessage());
+		info.setStatus(Integer.toString(HttpStatus.BAD_REQUEST.value()));
+		info.setUrl(exception.getUrl());
 		Instant now = Instant.now();
 		info.setTimestamp(Timestamp.from(now));
 		return info;
