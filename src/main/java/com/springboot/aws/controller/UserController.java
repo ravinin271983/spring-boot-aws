@@ -49,4 +49,10 @@ public class UserController {
 		userService.deleteUser(user);
 		return ResponseEntity.accepted().body("Request accepted.");
 	}
+	
+	@DeleteMapping(value="/users/{id}")
+	public ResponseEntity<String> deleteUser(@PathVariable Long id) {
+		userService.deleteUser(id);
+		return ResponseEntity.accepted().body("Request accepted.");
+	}
 }

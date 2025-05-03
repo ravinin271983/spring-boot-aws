@@ -3,6 +3,7 @@ package com.springboot.aws.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -81,6 +82,18 @@ public class UserServiceTest {
 		assertEquals(1, allUsers.size());
 	}
 
+	@Test
+	void deleteByIdTest() {
+		User user = mockUser();
+		when(userRepo.findById(Mockito.anyLong())).thenReturn(Optional.of(user));
+		doNothing().when(userRepo).delete(Mockito.any(User.class));
+		userService.deleteUser(1L);
+		
+		when(userRepo.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+		doNothing().when(userRepo).delete(Mockito.any(User.class));
+		userService.deleteUser(1L);
+	}
+	
 	private User mockUser() {
 		User user = new User();
 		user.setFirstName("JUnit");

@@ -47,6 +47,12 @@ public class UserService {
 		userRepo.delete(user);
 	}
 
+	public void deleteUser(Long id) {
+		Optional<User> userById = userRepo.findById(id);
+		if (userById.isPresent())
+			userRepo.delete(userById.get());
+	}
+	
 	@CacheEvict(key = "user")
 	public User saveUser (User user) {
 		return userRepo.save(user);
