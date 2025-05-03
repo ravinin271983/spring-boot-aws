@@ -143,4 +143,11 @@ public class ControllerTest {
 			.andExpect(status().is(HttpStatus.ACCEPTED.value()))
 			.andExpect(content().string(containsString("Request accepted.")));
 	}
+	
+	@Test
+	void deleteUserById() throws Exception {
+		this.mockMvc.perform(delete("/users/1")).andDo(print())
+			.andExpect(status().is(HttpStatus.ACCEPTED.value()))
+			.andExpect(content().string(containsString("Request accepted.")));
+	}
 }
