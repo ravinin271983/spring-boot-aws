@@ -21,7 +21,7 @@ spring.datasource.password=${AWS_MYSQL_PASS}
 3. Find SpringApplicationLauncher and run as Java Application.
 
 Sample CURL for testing:
-----------------------------------------------------------------------------------------------------------
+
 To register a user:
 curl --location 'http://localhost:8080/register' \
 --header 'Content-Type: application/json' \
@@ -43,7 +43,9 @@ Find user by userName:
 curl --location 'http://localhost:8080/users/userName/abc@test.com'
 Delete user by id:
 curl --location --request DELETE 'http://localhost:8080/users/1'
-----------------------------------------------------------------------------------------------------------
+
+
+
 docker compose yml, if using docker for mysql.
 version: '3.1'
 services:
